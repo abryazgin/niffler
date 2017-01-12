@@ -1,0 +1,3 @@
+
+- name: TESTS | Run
+  shell: "{{ _deploy_root }}/bin/test"

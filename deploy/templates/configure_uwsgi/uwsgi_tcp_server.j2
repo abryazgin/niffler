@@ -1,0 +1,17 @@
+[uwsgi]
+env = CONFIG_PATH={{ _config_path }}
+
+module = wsgi:application
+
+master = true
+processes = 5
+
+http-socket = :{{ _listen_uwsgi_port }}
+
+vacuum = true
+
+die-on-term = true
+daemonize = {{ _log_root }}/uwsgi.log
+
+lazy = true
+lazy-apps = true

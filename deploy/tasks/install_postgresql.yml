@@ -1,0 +1,31 @@
+- name: POSTGRESQL | INSTALL | Installing packeges
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items:
+    - postgresql
+    - libpq-dev
+    - python-psycopg2
+  become: true
+
+#- set_fact:
+#     dbuser: "{{ _project }}"
+#     dbpass: '1'
+#     dbname: "{{ _project }}"
+#
+# DON'T WORKING:
+#
+#- name: ensure database is created
+#  shell: "sudo -u postgres psql -c 'CREATE USER {{ dbuser }} PASSWORD {{ dbpass }}'"
+#
+#- name: ensure database is created
+#  shell: "sudo -u postgres psql -c 'GRANT ALL ON DATABASE {{ dbname }} TO {{ dbuser }}'"
+#
+#
+#  postgresql://niffler:1@localhost:5432/niffler
+#  sudo apt-get install postgresql libpq-dev python-psycopg2
+#  CREATE USER niffler PASSWORD '1';
+#  CREATE DATABASE niffler;
+#  GRANT ALL ON DATABASE niffler TO niffler;
+#

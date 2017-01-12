@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+fuser -k {{ _listen_uwsgi_port }}/tcp
+
+cd {{ _deploy_root }}/src
+{{ _venv_root }}/bin/uwsgi --ini {{ _deploy_root }}/src/uwsgi.ini

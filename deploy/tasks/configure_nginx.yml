@@ -1,0 +1,21 @@
+- name: NGINX | SERVER | Create available server
+  template:
+    src: "../templates/configure_nginx/nginx_uwsgi_server.j2"
+    dest: "/etc/nginx/sites-available/{{ _project }}.conf"
+    owner: "{{ _nginx_user }}"
+    group: "{{ _nginx_user }}"
+    mode: 0644
+  become: true
+
+- name: NGINX | SERVER | Create available server
+  file:
+    src: "/etc/nginx/sites-available/{{ _project }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ _project }}.conf"
+    state: link
+  become: true
+
+- name: NGINX | SERVER | Restart
+  service:
+    name: nginx
+    state: restarted
+  become: true

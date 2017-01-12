@@ -1,0 +1,9 @@
+- name: UWSGI | SERVER | Create config
+  template:
+#    src: "../templates/configure_uwsgi/uwsgi_server.j2"
+    src: "../templates/configure_uwsgi/uwsgi_tcp_server.j2"
+    dest: "{{ _deploy_root }}/src/uwsgi.ini"
+    owner: "{{ _user }}"
+    group: "{{ _user }}"
+    mode: 0644
+  become: true

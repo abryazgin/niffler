@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -e
+
+HOST='127.0.0.1'
+
+PARENT_DIR="{{ _deploy_root }}"
+VENV="{{ _venv_root }}"
+CONFIG_PATH="{{ _config_path }}"
+
+TEST_DIR="${PARENT_DIR}/tests"
+
+SRC_DIR="${PARENT_DIR}/src"
+NGINX_TEST_URL="http://${HOST}:80"
+NGINX_REAL_URL="http://${HOST}:8800"
+
+source ${VENV}/bin/activate
+
+CONFIG_PATH="${CONFIG_PATH}" \
+    PYTHONPATH="${SRC_DIR}" \
+    NGINX_TEST_URL="${NGINX_TEST_URL}" \
+    NGINX_REAL_URL="${NGINX_REAL_URL}" \
+    python -m unittest discover ${TEST_DIR}
+deactivate

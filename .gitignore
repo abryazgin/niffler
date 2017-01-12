@@ -1,0 +1,17 @@
+# Python
+*.py[cod]
+venv/
+__pycache__
+
+# JetBrains IDEs
+.idea/
+
+# ansible
+*.retry
+
+# sqlite
+*.db
+
+# own files and logs
+my_*
+*.log

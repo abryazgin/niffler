@@ -1,0 +1,16 @@
+- name: GENERAL | Create directorys
+  file: "path={{ item.name }}  state=directory owner={{ item.user }} group={{ item.user }} mode={{ item.mode }}"
+  with_items:
+    - { name: "{{ _project_root }}", mode: '0775', user: "{{ _user }}" }
+    - { name: "{{ _venv_root }}", mode: '0775', user: "{{ _user }}" }
+    - { name: "{{ _deploy_root }}/src", mode: '0775', user: "{{ _user }}" }
+    - { name: "{{ _deploy_root }}/bin", mode: '0775', user: "{{ _user }}" }
+    - { name: "{{ _log_root }}", mode: '0777', user: "{{ _user }}" }
+    - { name: "{{ _sock_root }}", mode: '0777', user: "{{ _user }}" }
+    - { name: "{{ _file_root }}/private", mode: '0770', user: "{{ _nginx_user }}" }
+    - { name: "{{ _file_root }}/public", mode: '0770', user: "{{ _nginx_user }}" }
+  become: true
+
+- name: GENERAL | Add user to group
+  shell: "usermod -a -G {{ _nginx_user }} {{ _user }}"
+  become: true

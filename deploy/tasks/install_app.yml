@@ -1,0 +1,5 @@
+- name: APP | VENV | Init virtualenv
+  shell: "virtualenv -p python3 {{ _venv_root }}"
+
+- name: APP | VENV | Upgrade pip
+  shell: "{{ _venv_root }}/bin/pip install --upgrade pip"

@@ -1,0 +1,17 @@
+[uwsgi]
+env = CONFIG_PATH={{ _config_path }}
+socket-timeout = 10
+module = wsgi:application
+
+master = true
+processes = 5
+
+socket = {{ _sock_root }}/{{ _project }}.sock
+chmod-socket = 666
+vacuum = true
+
+die-on-term = true
+daemonize = {{ _log_root }}/uwsgi.log
+
+lazy = true
+lazy-apps = true

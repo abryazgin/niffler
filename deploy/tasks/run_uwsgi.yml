@@ -1,0 +1,5 @@
+
+- name: UWSGI | Run
+  shell: "{{ _venv_root }}/bin/uwsgi --ini {{ _deploy_root }}/src/uwsgi.ini"
+  args:
+    chdir: "{{ _deploy_root }}/src"

@@ -1,0 +1,45 @@
+- name: APP | UPLOAD | Upload APP
+  synchronize:
+    src: ./../{{ item }}
+    dest: "{{ _project_root }}"
+    rsync_opts:
+      - "--delete --exclude=*.pyc"
+    use_ssh_args: true
+  with_items:
+    - src
+    - tests
+    - bin
+
+- name: APP | CONFIG | Upload config
+  template:
+    src: "../templates/configure_app/flask_config.j2"
+    dest: "{{ _config_path }}"
+
+- name: APP | BIN | Generate bin-scripts
+  template:
+    src: "../templates/configure_app/{{ item }}.j2"
+    dest: "{{ _deploy_root }}/bin/{{ item }}"
+    mode: 0777
+  with_items:
+    - test
+    - dbsync
+    - restart
+    - shell
+
+- name: APP | VENV | Install virtualenv packeges
+  pip:
+    executable: "{{ _venv_root }}/bin/pip"
+    requirements: "{{ _project_root }}/src/requirements.txt"
+
+- name: APP | UPLOAD | Sync APP
+  shell: "rsync -A -o -g -t -r {{ _project_root }}/{{ item }} {{ _deploy_root }}"
+  with_items:
+    - src
+
+- name: APP | UPLOAD | Sync APP
+  shell: "rsync -A -o -g -t -r --delete {{ _project_root }}/{{ item }} {{ _deploy_root }}"
+  with_items:
+    - tests
+
+- name: APP | DB | Synchronize DB structure
+  shell: "{{ _deploy_root }}/bin/dbsync"

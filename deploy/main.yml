@@ -1,0 +1,65 @@
+# on local machine
+#     sudo apt-get install python python-dev ansible
+#   OR
+#     sudo apt-get install python3 python3-dev ansible
+#
+#     ssh-copy-id -i ~/.ssh/id_rsa ubuntu
+#
+#
+# on remote machine:
+#     sudo apt-get install python3
+#     mkdir ~/.ssh
+#
+- hosts: "{{ hosts }}"
+  vars:
+       _user: "{{ user }}"
+       _project: niffler
+
+       _repository: git@github.com:bryazginnn/{{ _project }}.git
+       _branch: "{{ hostvars[inventory_hostname]['niffler_branch'] }}"
+
+       _project_root: /home/{{ _user }}/git/{{ _project }}
+       _venv_root: /home/{{ _user }}/venv/{{ _project }}
+       _deploy_root: /home/{{ _user }}/cloud/{{ _project }}
+       _log_root: /home/{{ _user }}/log/{{ _project }}
+       _sock_root: /home/{{ _user }}/sockets
+       _file_root: /var/www/files/{{ _project }}
+       _config_path: "{{ _deploy_root }}/{{ _project }}.cnf"
+
+       _request_prefix: '/private'
+
+       _listen_uwsgi_port: 8801
+       _listen_nginx_port: 8800
+
+       _nginx_user: www-data
+
+       _database_url: "{{ database_url }}"
+
+  tasks:
+    - name: GENERAL
+      include: 'tasks/general.yml'
+    - name: INSTALL NGINX
+      include: 'tasks/install_nginx.yml'
+    - name: INSTALL PACKAGES
+      include: 'tasks/install_packages.yml'
+    # - name: INSTALL POSTGRESQL
+    #  include: 'tasks/install_postgresql.yml'
+    - name: INSTALL APP
+      include: 'tasks/install_app.yml'
+    - name: CONFIGURE NGINX
+      include: 'tasks/configure_nginx.yml'
+    - name: CONFIGURE UWSGI
+      include: 'tasks/configure_uwsgi.yml'
+#
+    - name: STOP UWSGI
+      shell: "fuser -k {{ _listen_uwsgi_port }}/tcp"
+      ignore_errors: yes
+      become: true
+
+    - name: CONFIGURE APP
+      include: 'tasks/configure_app.yml'
+    - name: START UWSGI
+      include: 'tasks/run_uwsgi.yml'
+    - name: RUN TESTS
+      include: 'tasks/run_tests.yml'
+

@@ -1,0 +1,77 @@
+# Configuration for {{ _project }}
+
+upstream {{ _project }} {
+        server                       127.0.0.1:{{ _listen_uwsgi_port }};
+}
+
+server {
+
+    # Running port
+    listen                  {{ _listen_nginx_port }};
+    client_max_body_size    100m;
+    log_subrequest          on;
+
+    # authenticate request by subrequest
+    location = /authenticate {
+        internal;
+
+        proxy_set_body               off;
+        proxy_set_header X-URI       $request_uri;
+        proxy_set_header X-METHOD    $request_method;
+
+        proxy_pass                   http://{{ _project }};
+
+        proxy_method                 POST;
+    }
+
+    # private file storage
+    location {{ _request_prefix }} {
+
+        if ($request_method = PATCH) {
+            rewrite                      ^{{ _request_prefix }}/(.*)$ /file/$1 last;
+        }
+        rewrite                      ^{{ _request_prefix }}/(.*)$ /dav/$1 last;
+    }
+
+    # private file storage
+    location /dav {
+
+        rewrite                      ^/dav/(.*)$ /$1 break;
+
+        auth_request                 /authenticate;
+
+        root                         {{ _file_root }}/private;
+
+        dav_methods                  PUT DELETE;
+        dav_access                   group:rw;
+        create_full_put_path         on;
+    }
+
+    # public file storage (public only GET!)
+    location /public {
+
+        rewrite                      ^/public/(.*)$ /$1 break;
+
+        root                         {{ _file_root }}/public;
+
+        dav_methods                  PUT DELETE;
+        dav_access                   group:rw;
+        create_full_put_path         on;
+
+
+        limit_except GET {
+            allow                    127.0.0.1;
+            deny                     all;
+        }
+    }
+
+    location / {
+        internal;
+
+        proxy_pass                   http://{{ _project }};
+    }
+
+    location /ping {
+        proxy_pass                   http://{{ _project }};
+    }
+}

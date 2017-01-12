@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+INTERPRETER=$1 # for example ipython
+if [ -z "$INTERPRETER" ]; then
+    INTERPRETER="ipython"
+fi
+
+PARENT_DIR="{{ _deploy_root }}"
+VENV="{{ _venv_root }}"
+CONFIG_PATH="{{ _config_path }}"
+SRC_DIR="${PARENT_DIR}/src"
+
+source ${VENV}/bin/activate
+
+CONFIG_PATH="${CONFIG_PATH}" \
+    PYTHONPATH="${SRC_DIR}" \
+    ${INTERPRETER}
+
+deactivate
