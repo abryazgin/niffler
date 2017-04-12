@@ -51,15 +51,15 @@
     - name: CONFIGURE UWSGI
       include: 'tasks/configure_uwsgi.yml'
 #
-    - name: STOP UWSGI
-      shell: "fuser -k {{ _listen_uwsgi_port }}/tcp"
-      ignore_errors: yes
-      become: true
+    - name: STOP SERVICE
+      shell: supervisorctl stop niffler
 
     - name: CONFIGURE APP
       include: 'tasks/configure_app.yml'
-    - name: START UWSGI
-      include: 'tasks/run_uwsgi.yml'
+
+    - name: START SERVICE
+      shell: supervisorctl start niffler
+
     - name: RUN TESTS
       include: 'tasks/run_tests.yml'
 

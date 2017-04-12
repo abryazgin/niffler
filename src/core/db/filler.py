@@ -4,6 +4,7 @@ from core.db.models import Role, User, Token, Group
 admin_name = 'admin'
 admin_token = '0b202c64e4ba86a0023a5b8a8a3e2a2b31578cc313340813'
 
+
 test_client_name = 'client'
 test_client_token = 'e8738304de22ffdb812fc151c232af3ee5dd12b557f08d1f'
 
@@ -50,7 +51,6 @@ def fill_groups(session):
     else:
         group.users = users
         session.commit()
-
 
 
 def fill_users(session):
