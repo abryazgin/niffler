@@ -15,3 +15,16 @@ source venv/bin/activate
 pip install requirements.txt
 deactivate
 ```
+
+Generate user + token
+-------------
+1. generate token
+```bash
+echo $RANDOM | shasum
+```
+
+2. insert user & token
+
+```
+select create_user('<user_name>', 'token_code');
+``` 
