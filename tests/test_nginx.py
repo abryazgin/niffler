@@ -59,8 +59,8 @@ class TestNginx(BaseNifflerTest):
         result = conn.execute('SELECT 1').fetchall()[0][0]
         self.assertEqual(result, 1, 'Test DB access')
 
-    def test_nginx_public_port(self):  # TODO remove this test?
-        self.assert_url(TestNginx.get_test_url(), res_http_code=200)  # OK
+    # def test_nginx_public_port(self):  # TODO remove this test?
+    #     self.assert_url(TestNginx.get_test_url(), res_http_code=200)  # OK
 
     def test_nginx_private_port_forbidden(self):
         self.assert_url(TestNginx.get_real_url() + '/private', res_http_code=401)  # Unauthorized
