@@ -28,3 +28,10 @@ echo $RANDOM | shasum
 ```
 select create_user('<user_name>', 'token_code');
 ``` 
+
+
+Daemon
+-------------
+```bash
+systemctl --user status niffler
+```

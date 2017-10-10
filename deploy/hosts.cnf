@@ -1,9 +1,2 @@
-ubuntu
-ubuntu2
-ubuntu3
-tdev227    ansible_become_pass=lhsy4f
-fs         ansible_ssh_host=192.168.58.230    ansible_ssh_user=developer    ansible_become_pass=lhsy4f
-
-[all:vars]
-ansible_become_pass=ubuntu
-niffler_branch=test
+fs         ansible_ssh_host=office.rc-online.ru  ansible_ssh_port=23022  ansible_ssh_user=developer  ansible_become_pass=lhsy4f  niffler_branch=test
+niffler    ansible_ssh_host=pro.rc-online.ru     ansible_ssh_port=22124  ansible_ssh_user=developer                              niffler_branch=master

@@ -36,29 +36,29 @@
        _database_url: "{{ database_url }}"
 
   tasks:
-    - name: GENERAL
-      include: 'tasks/general.yml'
-    - name: INSTALL NGINX
-      include: 'tasks/install_nginx.yml'
-    - name: INSTALL PACKAGES
-      include: 'tasks/install_packages.yml'
-    # - name: INSTALL POSTGRESQL
-    #  include: 'tasks/install_postgresql.yml'
-    - name: INSTALL APP
-      include: 'tasks/install_app.yml'
-    - name: CONFIGURE NGINX
-      include: 'tasks/configure_nginx.yml'
-    - name: CONFIGURE UWSGI
-      include: 'tasks/configure_uwsgi.yml'
+#    - name: GENERAL
+#      include: 'tasks/general.yml'
+#    - name: INSTALL NGINX
+#      include: 'tasks/install_nginx.yml'
+#    - name: INSTALL PACKAGES
+#      include: 'tasks/install_packages.yml'
+#     - name: INSTALL POSTGRESQL
+#      include: 'tasks/install_postgresql.yml'
+#    - name: INSTALL APP
+#      include: 'tasks/install_app.yml'
+#    - name: CONFIGURE NGINX
+#      include: 'tasks/configure_nginx.yml'
+#    - name: CONFIGURE UWSGI
+#      include: 'tasks/configure_uwsgi.yml'
 #
     - name: STOP SERVICE
-      shell: supervisorctl stop niffler
+      shell: systemctl --user stop niffler
 
     - name: CONFIGURE APP
       include: 'tasks/configure_app.yml'
 
     - name: START SERVICE
-      shell: supervisorctl start niffler
+      shell: systemctl --user start niffler
 
     - name: RUN TESTS
       include: 'tasks/run_tests.yml'
